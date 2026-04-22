@@ -11,7 +11,9 @@
       "Bash(git push:*)",
       "Bash(git add -A)",
       "Bash(timeout 5 npm run dev:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)"
     ]
   }
 }
