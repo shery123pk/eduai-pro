@@ -3,7 +3,11 @@
     "allow": [
       "Bash(git init:*)",
       "Bash(npm create:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run build:*)",
+      "Bash(vercel --version:*)",
+      "Bash(vercel:*)"
     ]
   }
 }
