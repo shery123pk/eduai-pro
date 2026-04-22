@@ -9,7 +9,9 @@
       "Bash(vercel --version:*)",
       "Bash(vercel:*)",
       "Bash(git push:*)",
-      "Bash(git add -A)"
+      "Bash(git add -A)",
+      "Bash(timeout 5 npm run dev:*)",
+      "Bash(curl:*)"
     ]
   }
 }

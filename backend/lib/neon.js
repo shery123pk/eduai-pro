@@ -2,7 +2,9 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 
-export const pool = new Pool({
+const isDevelopment = !process.env.NEON_DATABASE_URL || process.env.NEON_DATABASE_URL.includes('placeholder');
+
+export const pool = isDevelopment ? null : new Pool({
   connectionString: process.env.NEON_DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
@@ -13,22 +15,32 @@ export const pool = new Pool({
 });
 
 // Test connection
-pool.on('connect', () => {
-  console.log('✅ Connected to Neon PostgreSQL');
-});
+if (pool) {
+  pool.on('connect', () => {
+    console.log('✅ Connected to Neon PostgreSQL');
+  });
 
-pool.on('error', (err) => {
-  console.error('❌ Unexpected error on idle client', err);
-  process.exit(-1);
-});
+  pool.on('error', (err) => {
+    console.error('❌ Unexpected error on idle client', err);
+  });
+} else {
+  console.warn('⚠️  Running in DEMO MODE - Database not configured');
+  console.warn('   Get Neon database at: https://neon.tech');
+}
 
 // Helper function to execute queries
 export async function query(text, params) {
+  if (!pool) {
+    console.warn('⚠️  Demo mode: Database query skipped');
+    // Return mock data for demo
+    return { rows: [], rowCount: 0 };
+  }
+
   const start = Date.now();
   try {
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
-    console.log('Executed query', { text, duration, rows: res.rowCount });
+    console.log('Executed query', { text: text.substring(0, 50), duration, rows: res.rowCount });
     return res;
   } catch (error) {
     console.error('Query error:', error);

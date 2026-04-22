@@ -1,11 +1,19 @@
 // Document upload API routes (Teacher only)
 import express from 'express';
 import multer from 'multer';
-import pdfParse from 'pdf-parse';
 import { authenticateToken, requireTeacher } from '../middleware/auth.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { processDocumentForRAG } from '../lib/embeddings.js';
 import { query } from '../lib/neon.js';
+
+// Lazy load pdf-parse to avoid initialization errors
+let pdfParse = null;
+async function getPdfParse() {
+  if (!pdfParse) {
+    pdfParse = (await import('pdf-parse')).default;
+  }
+  return pdfParse;
+}
 
 const router = express.Router();
 
@@ -52,7 +60,8 @@ router.post('/document', authenticateToken, requireTeacher, upload.single('file'
   // Extract text based on file type
   if (req.file.mimetype === 'application/pdf') {
     try {
-      const pdfData = await pdfParse(req.file.buffer);
+      const parser = await getPdfParse();
+      const pdfData = await parser(req.file.buffer);
       text = pdfData.text;
     } catch (error) {
       console.error('PDF parsing error:', error);
