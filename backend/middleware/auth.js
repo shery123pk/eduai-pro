@@ -9,8 +9,15 @@ export function authenticateToken(req, res, next) {
     return res.status(401).json({ error: 'Access token required' });
   }
 
+  // Demo tokens — allow through with mock user
+  if (token.startsWith('demo-token-')) {
+    const role = token.includes('teacher') ? 'teacher' : 'student';
+    req.user = { id: 'demo-user-' + role, email: role + '@demo.com', role };
+    return next();
+  }
+
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
+    const user = jwt.verify(token, process.env.JWT_SECRET || 'demo-secret-key');
     req.user = user;
     next();
   } catch (error) {
