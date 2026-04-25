@@ -5,11 +5,11 @@ import toast from 'react-hot-toast';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const masteryInfo = {
-  not_started: { color: 'text-zinc-400', bg: 'bg-zinc-800', icon: '○', label: 'Not Started' },
-  attempted: { color: 'text-red-400', bg: 'bg-red-900/40', icon: '↻', label: 'Attempted' },
-  familiar: { color: 'text-yellow-400', bg: 'bg-yellow-900/40', icon: '◑', label: 'Familiar (50pts)' },
-  proficient: { color: 'text-blue-400', bg: 'bg-blue-900/40', icon: '◕', label: 'Proficient (80pts)' },
-  mastered: { color: 'text-green-400', bg: 'bg-green-900/40', icon: '●', label: 'Mastered (100pts)' }
+  not_started: { color: 'text-slate-400', bg: 'bg-slate-100', icon: '○', label: 'Not Started' },
+  attempted:   { color: 'text-red-500',   bg: 'bg-red-50',    icon: '↻', label: 'Attempted' },
+  familiar:    { color: 'text-amber-500', bg: 'bg-amber-50',  icon: '◑', label: 'Familiar (50pts)' },
+  proficient:  { color: 'text-blue-500',  bg: 'bg-blue-50',   icon: '◕', label: 'Proficient (80pts)' },
+  mastered:    { color: 'text-green-500', bg: 'bg-green-50',  icon: '●', label: 'Mastered (100pts)' }
 };
 
 const ExerciseInterface = ({ exerciseId, onComplete }) => {
@@ -117,18 +117,18 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
 
   if (loading) {
     return (
-      <div className="glass-card rounded-3xl p-12 border border-white/10 text-center">
-        <div className="loader-modern mb-4 mx-auto"></div>
-        <p className="text-zinc-400">Loading exercise...</p>
+      <div className="bg-white rounded-3xl p-12 border-2 border-slate-100 text-center shadow-sm">
+        <div className="w-10 h-10 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-slate-500 font-medium">Loading exercise...</p>
       </div>
     );
   }
 
   if (!exercise) {
     return (
-      <div className="glass-card rounded-3xl p-12 border border-white/10 text-center">
+      <div className="bg-white rounded-3xl p-12 border-2 border-slate-100 text-center shadow-sm">
         <div className="text-5xl mb-4">😕</div>
-        <p className="text-zinc-400">Exercise not found</p>
+        <p className="text-slate-500 font-medium">Exercise not found</p>
       </div>
     );
   }
@@ -146,37 +146,38 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
     return (
       <div className="space-y-6 animate-fade-scale">
         {/* Score Card */}
-        <div className="glass-card rounded-3xl p-8 border border-white/10 text-center">
+        <div className="bg-white rounded-3xl p-8 border-2 border-slate-100 shadow-sm text-center">
           <div className="text-8xl mb-4">
             {results.score === 100 ? '🎉' : results.score >= 70 ? '👍' : '💪'}
           </div>
-          <div className="text-7xl font-black text-white mb-2">{results.score}%</div>
-          <p className="text-zinc-400 text-lg">{results.correctCount} of {results.totalQuestions} correct</p>
+          <div className="text-7xl font-black text-slate-900 mb-2">{results.score}%</div>
+          <p className="text-slate-500 text-lg">{results.correctCount} of {results.totalQuestions} correct</p>
 
           {/* Mastery Badge */}
-          <div className={`inline-flex items-center gap-3 mt-6 px-6 py-3 rounded-2xl ${mastery.bg} border border-white/10`}>
+          <div className={`inline-flex items-center gap-3 mt-6 px-6 py-3 rounded-2xl ${mastery.bg} border border-slate-200`}>
             <span className="text-3xl">{mastery.icon}</span>
             <div className="text-left">
               <div className={`font-black text-lg ${mastery.color}`}>{mastery.label}</div>
               {improved && (
-                <div className="text-zinc-400 text-sm">
+                <div className="text-slate-500 text-sm">
                   ↑ From {masteryInfo[results.previousMasteryLevel]?.label || 'Not Started'}
                 </div>
               )}
             </div>
           </div>
 
-          <p className="text-zinc-300 mt-4 font-medium">{results.message}</p>
+          <p className="text-slate-600 mt-4 font-medium">{results.message}</p>
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 mt-8">
-            <button onClick={handleRetry} className="px-6 py-3 glass-card border border-white/20 text-white font-bold rounded-2xl hover:border-blue-500/50 transition-all">
+            <button onClick={handleRetry} className="px-6 py-3 bg-slate-100 border border-slate-200 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition-all">
               Try Again
             </button>
             {results.score < 100 && (
               <button
                 onClick={() => { setCurrentQ(0); setPhase('review'); }}
-                className="btn-cyber px-6 py-3"
+                className="px-6 py-3 rounded-2xl font-bold text-white shadow-lg transition-all"
+                style={{ background: 'linear-gradient(135deg, #6366f1, #4338ca)' }}
               >
                 Review Answers
               </button>
@@ -185,8 +186,8 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
         </div>
 
         {/* Mastery Path */}
-        <div className="glass-card rounded-3xl p-6 border border-white/10">
-          <h3 className="text-lg font-black text-white mb-4">Mastery Progression</h3>
+        <div className="bg-white rounded-3xl p-6 border-2 border-slate-100 shadow-sm">
+          <h3 className="text-lg font-black text-slate-900 mb-4">Mastery Progression</h3>
           <div className="flex items-center gap-2 flex-wrap">
             {['not_started', 'attempted', 'familiar', 'proficient', 'mastered'].map((level, idx, arr) => {
               const info = masteryInfo[level];
@@ -195,19 +196,19 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
               return (
                 <div key={level} className="flex items-center gap-2">
                   <div className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
-                    isCurrent ? `${info.bg} border-white/30` :
-                    isPast ? 'bg-green-900/20 border-green-500/30' :
-                    'bg-zinc-900 border-zinc-800'
+                    isCurrent ? `${info.bg} border-indigo-200` :
+                    isPast ? 'bg-green-50 border-green-200' :
+                    'bg-slate-50 border-slate-200'
                   }`}>
-                    <span className={`${isPast || isCurrent ? info.color : 'text-zinc-600'} font-bold`}>
+                    <span className={`${isPast || isCurrent ? info.color : 'text-slate-400'} font-bold`}>
                       {info.icon}
                     </span>
-                    <span className={`text-sm font-medium ${isCurrent ? 'text-white' : isPast ? info.color : 'text-zinc-600'}`}>
+                    <span className={`text-sm font-medium ${isCurrent ? 'text-slate-800' : isPast ? info.color : 'text-slate-400'}`}>
                       {info.label.split('(')[0].trim()}
                     </span>
                   </div>
                   {idx < arr.length - 1 && (
-                    <svg className="w-4 h-4 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   )}
@@ -215,7 +216,7 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
               );
             })}
           </div>
-          <p className="text-zinc-500 text-sm mt-3">
+          <p className="text-slate-500 text-sm mt-3">
             {results.masteryLevel === 'mastered'
               ? '🎉 You have mastered this skill!'
               : `Score 100% to reach the next mastery level. ${results.masteryPoints > 0 ? `Earned ${results.masteryPoints} mastery points.` : ''}`}
@@ -238,9 +239,9 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
           <span className="text-zinc-400 text-sm">Score: {results.score}%</span>
         </div>
 
-        <div className="glass-card rounded-3xl p-8 border border-white/10">
+        <div className="bg-white rounded-3xl p-8 border-2 border-slate-100 shadow-sm">
           {/* Question */}
-          <h3 className="text-2xl font-black text-white mb-6">
+          <h3 className="text-2xl font-black text-slate-900 mb-6">
             {exercise.questions[currentQ].question}
           </h3>
 
@@ -255,22 +256,22 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
                   key={option}
                   className={`p-4 rounded-2xl border-2 flex items-center gap-3 ${
                     isCorrectAnswer
-                      ? 'bg-green-900/30 border-green-500 text-green-300'
+                      ? 'bg-green-50 border-green-400 text-green-800'
                       : isUserAnswer && !isCorrect
-                      ? 'bg-red-900/30 border-red-500 text-red-300'
-                      : 'bg-zinc-900 border-zinc-700 text-zinc-400'
+                      ? 'bg-red-50 border-red-400 text-red-800'
+                      : 'bg-slate-50 border-slate-200 text-slate-600'
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm ${
                     isCorrectAnswer ? 'bg-green-500 text-white' :
                     isUserAnswer && !isCorrect ? 'bg-red-500 text-white' :
-                    'bg-zinc-800 text-zinc-400'
+                    'bg-slate-200 text-slate-500'
                   }`}>
                     {isCorrectAnswer ? '✓' : isUserAnswer && !isCorrect ? '✗' : option[0]}
                   </div>
                   <span className="font-medium">{option}</span>
-                  {isCorrectAnswer && <span className="ml-auto text-green-400 font-bold text-sm">Correct Answer</span>}
-                  {isUserAnswer && !isCorrect && <span className="ml-auto text-red-400 font-bold text-sm">Your Answer</span>}
+                  {isCorrectAnswer && <span className="ml-auto text-green-600 font-bold text-sm">Correct Answer</span>}
+                  {isUserAnswer && !isCorrect && <span className="ml-auto text-red-600 font-bold text-sm">Your Answer</span>}
                 </div>
               );
             })}
@@ -279,15 +280,15 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
           {/* Explanation */}
           {resultForQ && (
             <div className={`p-4 rounded-2xl border ${
-              isCorrect ? 'bg-green-900/20 border-green-500/30' : 'bg-blue-900/20 border-blue-500/30'
+              isCorrect ? 'bg-green-50 border-green-200' : 'bg-blue-50 border-blue-200'
             }`}>
               <div className="flex items-start gap-3">
                 <span className="text-xl">{isCorrect ? '✅' : '💡'}</span>
                 <div>
-                  <div className={`font-bold mb-1 ${isCorrect ? 'text-green-400' : 'text-blue-400'}`}>
+                  <div className={`font-bold mb-1 ${isCorrect ? 'text-green-700' : 'text-blue-700'}`}>
                     {isCorrect ? 'Correct!' : 'Explanation'}
                   </div>
-                  <p className="text-zinc-300 text-sm">{resultForQ.explanation}</p>
+                  <p className="text-slate-700 text-sm">{resultForQ.explanation}</p>
                 </div>
               </div>
             </div>
@@ -297,16 +298,16 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
         {/* Navigation */}
         <div className="flex gap-3">
           {currentQ > 0 && (
-            <button onClick={() => setCurrentQ(q => q - 1)} className="glass-card border border-white/20 text-white font-bold px-5 py-3 rounded-2xl hover:border-white/40 transition-all">
+            <button onClick={() => setCurrentQ(q => q - 1)} className="bg-slate-100 border border-slate-200 text-slate-700 font-bold px-5 py-3 rounded-2xl hover:bg-slate-200 transition-all">
               ← Prev
             </button>
           )}
           {currentQ < totalQuestions - 1 ? (
-            <button onClick={() => setCurrentQ(q => q + 1)} className="btn-cyber flex-1 px-5 py-3">
+            <button onClick={() => setCurrentQ(q => q + 1)} className="flex-1 px-5 py-3 rounded-2xl font-bold text-white transition-all" style={{ background: 'linear-gradient(135deg, #6366f1, #4338ca)' }}>
               Next Question →
             </button>
           ) : (
-            <button onClick={() => setPhase('complete')} className="btn-cyber flex-1 px-5 py-3">
+            <button onClick={() => setPhase('complete')} className="flex-1 px-5 py-3 rounded-2xl font-bold text-white transition-all" style={{ background: 'linear-gradient(135deg, #6366f1, #4338ca)' }}>
               View Final Score →
             </button>
           )}
@@ -319,34 +320,34 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
   return (
     <div className="space-y-4">
       {/* Progress Bar */}
-      <div className="glass-card rounded-2xl p-4 border border-white/10">
+      <div className="bg-white rounded-2xl p-4 border-2 border-slate-100 shadow-sm">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-white font-bold text-sm">{exercise.title}</span>
-          <span className="text-zinc-400 text-sm">Question {currentQ + 1} of {totalQuestions}</span>
+          <span className="text-slate-900 font-bold text-sm">{exercise.title}</span>
+          <span className="text-slate-500 text-sm">Question {currentQ + 1} of {totalQuestions}</span>
         </div>
-        <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+        <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-500"
+            className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500"
             style={{ width: `${((currentQ) / totalQuestions) * 100}%` }}
           />
         </div>
         {progress && (
           <div className="flex items-center gap-2 mt-2">
-            <span className={`text-xs font-bold ${masteryInfo[progress.masteryLevel]?.color || 'text-zinc-400'}`}>
+            <span className={`text-xs font-bold ${masteryInfo[progress.masteryLevel]?.color || 'text-slate-400'}`}>
               {masteryInfo[progress.masteryLevel]?.icon} {masteryInfo[progress.masteryLevel]?.label || 'Not Started'}
             </span>
             {progress.bestScore > 0 && (
-              <span className="text-xs text-zinc-500">· Best: {progress.bestScore}%</span>
+              <span className="text-xs text-slate-400">· Best: {progress.bestScore}%</span>
             )}
           </div>
         )}
       </div>
 
       {/* Question Card */}
-      <div className="glass-card rounded-3xl p-8 border border-white/10 animate-fade-scale">
+      <div className="bg-white rounded-3xl p-8 border-2 border-slate-100 shadow-sm animate-fade-scale">
         <div className="mb-6">
-          <div className="text-sm font-bold text-blue-400 mb-3">Question {currentQ + 1}</div>
-          <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
+          <div className="text-sm font-bold text-indigo-600 mb-3">Question {currentQ + 1}</div>
+          <h3 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight">
             {question.question}
           </h3>
         </div>
@@ -362,12 +363,12 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
                 onClick={() => handleSelectAnswer(question.id, option)}
                 className={`w-full p-4 rounded-2xl border-2 flex items-center gap-4 text-left transition-all font-medium ${
                   isSelected
-                    ? 'border-blue-500 bg-blue-900/30 text-white shadow-lg shadow-blue-500/20'
-                    : 'border-zinc-700 bg-zinc-900/50 text-zinc-300 hover:border-zinc-500 hover:bg-zinc-800/50'
+                    ? 'border-indigo-500 bg-indigo-50 text-slate-900 shadow-sm'
+                    : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-indigo-300 hover:bg-indigo-50'
                 }`}
               >
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 ${
-                  isSelected ? 'bg-blue-500 text-white' : 'bg-zinc-800 text-zinc-400'
+                  isSelected ? 'bg-indigo-500 text-white' : 'bg-slate-200 text-slate-600'
                 }`}>
                   {labels[idx]}
                 </div>
@@ -378,32 +379,29 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
         </div>
 
         {/* Hint Section */}
-        <div className="border-t border-white/10 pt-4">
+        <div className="border-t border-slate-100 pt-4">
           {!showHint ? (
             <button
               onClick={() => fetchHint(question.id)}
-              className="text-sm text-yellow-400 hover:text-yellow-300 font-medium flex items-center gap-2 transition-colors"
+              className="text-sm text-amber-600 hover:text-amber-700 font-medium flex items-center gap-2 transition-colors"
             >
               <span>💡</span>
               <span>Need a hint? (marks as used)</span>
             </button>
           ) : (
-            <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-2xl p-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
               <div className="flex items-start gap-3">
                 <span className="text-xl">💡</span>
                 <div className="flex-1">
-                  <div className="text-yellow-400 font-bold text-sm mb-1">
+                  <div className="text-amber-700 font-bold text-sm mb-1">
                     Hint {hintLevels[question.id] || 1}
                   </div>
-                  <p className="text-zinc-300 text-sm">{currentHints[question.id]}</p>
+                  <p className="text-slate-700 text-sm">{currentHints[question.id]}</p>
                 </div>
               </div>
               <button
-                onClick={() => {
-                  setShowHint(false);
-                  fetchHint(question.id);
-                }}
-                className="mt-2 text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors"
+                onClick={() => { setShowHint(false); fetchHint(question.id); }}
+                className="mt-2 text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors"
               >
                 Show next hint →
               </button>
@@ -417,7 +415,7 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
         {currentQ > 0 && (
           <button
             onClick={() => { setCurrentQ(q => q - 1); setShowHint(false); }}
-            className="glass-card border border-white/20 text-white font-bold px-5 py-3 rounded-2xl hover:border-white/40 transition-all"
+            className="bg-slate-100 border border-slate-200 text-slate-700 font-bold px-5 py-3 rounded-2xl hover:bg-slate-200 transition-all"
           >
             ← Back
           </button>
@@ -426,19 +424,15 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
         {currentQ < totalQuestions - 1 ? (
           <button
             onClick={() => {
-              if (!answers[question.id]) {
-                toast.error('Please select an answer first');
-                return;
-              }
+              if (!answers[question.id]) { toast.error('Please select an answer first'); return; }
               setCurrentQ(q => q + 1);
               setShowHint(false);
             }}
             disabled={!answers[question.id]}
-            className={`flex-1 py-3 rounded-2xl font-bold transition-all ${
-              answers[question.id]
-                ? 'btn-cyber'
-                : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+            className={`flex-1 py-3 rounded-2xl font-bold text-white transition-all ${
+              answers[question.id] ? '' : 'opacity-40 cursor-not-allowed'
             }`}
+            style={answers[question.id] ? { background: 'linear-gradient(135deg, #6366f1, #4338ca)' } : { background: '#94a3b8' }}
           >
             Next Question →
           </button>
@@ -446,11 +440,8 @@ const ExerciseInterface = ({ exerciseId, onComplete }) => {
           <button
             onClick={handleSubmit}
             disabled={submitting || answeredCount < totalQuestions}
-            className={`flex-1 py-3 rounded-2xl font-bold transition-all ${
-              !submitting && answeredCount === totalQuestions
-                ? 'btn-cyber'
-                : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
-            }`}
+            className="flex-1 py-3 rounded-2xl font-bold text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            style={!submitting && answeredCount === totalQuestions ? { background: 'linear-gradient(135deg, #6366f1, #4338ca)' } : { background: '#94a3b8' }}
           >
             {submitting ? 'Submitting...' : `Submit Exercise (${answeredCount}/${totalQuestions})`}
           </button>
