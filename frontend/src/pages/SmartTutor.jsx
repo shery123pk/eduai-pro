@@ -98,9 +98,10 @@ const SmartTutor = () => {
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
                   subject === subj.id
-                    ? 'gradient-primary text-white shadow-lg shadow-primary/30'
-                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    ? 'text-white shadow-lg'
+                    : 'bg-slate-100 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200'
                 }`}
+                style={subject === subj.id ? { background: 'linear-gradient(135deg, #6366f1, #4338ca)' } : {}}
               >
                 <span>{subj.icon}</span>
                 <span>{subj.name}</span>
@@ -113,7 +114,7 @@ const SmartTutor = () => {
           {/* Left: Question Input */}
           <div className="lg:col-span-2 space-y-6">
             <div className="glassmorphism p-6 rounded-xl">
-              <h3 className="text-lg font-bold text-white mb-4">Ask a Question</h3>
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Ask a Question</h3>
 
               <form onSubmit={handleAsk} className="space-y-4">
                 <textarea
@@ -148,13 +149,13 @@ const SmartTutor = () => {
 
             {/* Example Questions */}
             <div className="glassmorphism p-6 rounded-xl">
-              <h4 className="text-sm font-bold text-slate-400 mb-3">Example Questions:</h4>
+              <h4 className="text-sm font-bold text-slate-500 mb-3">Example Questions:</h4>
               <div className="space-y-2">
                 {(exampleQuestions[subject] || []).map((q, idx) => (
                   <button
                     key={idx}
                     onClick={() => setQuestion(q)}
-                    className="w-full text-left px-3 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-lg text-slate-300 transition-colors"
+                    className="w-full text-left px-3 py-2 text-sm bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-lg text-slate-700 hover:text-indigo-700 transition-colors"
                   >
                     {q}
                   </button>
@@ -166,7 +167,7 @@ const SmartTutor = () => {
           {/* Right: Answer */}
           <div className="lg:col-span-3">
             <div className="glassmorphism p-6 rounded-xl min-h-[500px]">
-              <h3 className="text-lg font-bold text-white mb-4">Answer</h3>
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Answer</h3>
 
               {loading ? (
                 <div className="flex flex-col items-center justify-center h-64">
@@ -182,7 +183,7 @@ const SmartTutor = () => {
 
                   <MathRenderer content={answer} />
 
-                  <div className="pt-4 border-t border-slate-600 flex gap-3">
+                  <div className="pt-4 border-t border-slate-200 flex gap-3">
                     <button
                       onClick={() => navigator.clipboard.writeText(answer)}
                       className="btn-secondary flex-1"
@@ -203,7 +204,7 @@ const SmartTutor = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center h-64 text-center">
                   <div className="text-6xl mb-4">🎯</div>
-                  <h4 className="text-xl font-bold text-white mb-2">Ready to Help!</h4>
+                  <h4 className="text-xl font-bold text-slate-800 mb-2">Ready to Help!</h4>
                   <p className="text-slate-400 max-w-md">
                     Ask any question about {subjects.find((s) => s.id === subject)?.name} and I'll provide a detailed explanation
                   </p>

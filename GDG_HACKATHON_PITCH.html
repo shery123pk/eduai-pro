@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pak AI Tutor — GDG Hackathon 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f0f4ff; color: #1e293b; }
+
+    @media print {
+      @page { size: A4; margin: 12mm; }
+      .no-print { display: none !important; }
+      body { background: #fff; }
+      .hero, .cta { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      section { page-break-inside: avoid; }
+    }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 36px 24px 60px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 40%, #24243e 100%);
+      border-radius: 28px;
+      padding: 0;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 20px 60px rgba(79,70,229,0.35);
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%);
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -60px; left: 20%;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168,85,247,0.2) 0%, transparent 70%);
+    }
+
+    /* Vision ribbon */
+    .vision-ribbon {
+      background: linear-gradient(90deg, rgba(253,230,138,0.15), rgba(251,191,36,0.08));
+      border-bottom: 1px solid rgba(253,230,138,0.2);
+      padding: 10px 48px;
+      font-size: 12px;
+      color: #fde68a;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .vision-ribbon strong { color: #fbbf24; }
+
+    .hero-body { padding: 44px 48px 48px; position: relative; z-index: 1; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px; padding: 6px 18px;
+      font-size: 11px; font-weight: 800;
+      color: #fde68a; margin-bottom: 22px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: 58px; font-weight: 900; line-height: 1.05;
+      letter-spacing: -1px; margin-bottom: 6px;
+      color: #ffffff;
+    }
+    .hero h1 span { color: #fbbf24; }
+    .hero-sub { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .hero .tagline {
+      font-size: 16px; color: rgba(255,255,255,0.85);
+      max-width: 540px; line-height: 1.7; font-weight: 500; margin-bottom: 28px;
+    }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .hero-pill {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px; padding: 7px 16px;
+      font-size: 12px; font-weight: 700; color: #e0e7ff;
+    }
+    .hero-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0; }
+    .hero-team { display: flex; gap: 20px; flex-wrap: wrap; }
+    .hero-member {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-avatar {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+      border: 1.5px solid rgba(255,255,255,0.18);
+    }
+    .hero-member-name { font-size: 13px; font-weight: 800; color: #ffffff; line-height: 1.2; }
+    .hero-member-role { font-size: 11px; color: #a5b4fc; font-weight: 500; }
+
+    /* ── SECTIONS ── */
+    section {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 32px 36px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 20px rgba(79,70,229,0.07);
+      border: 1px solid #e8edff;
+    }
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 900; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #6366f1;
+      background: #eef2ff; border-radius: 999px;
+      padding: 4px 12px; margin-bottom: 10px;
+    }
+    h2 { font-size: 22px; font-weight: 900; color: #0f172a; margin-bottom: 10px; }
+    .section-desc { font-size: 14px; line-height: 1.8; color: #475569; font-weight: 500; margin-bottom: 20px; }
+
+    /* ── PROBLEM ── */
+    .problem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .prob-card {
+      background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+      border: 1.5px solid #fecaca;
+      border-radius: 14px; padding: 18px 14px; text-align: center;
+    }
+    .prob-card .ei { font-size: 30px; display: block; margin-bottom: 8px; }
+    .prob-card p { font-size: 12px; color: #9f1239; font-weight: 700; line-height: 1.5; }
+
+    /* ── SOLUTION ── */
+    .solution-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+    .sol-card {
+      border-radius: 14px; padding: 16px;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .sol-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .sol-card h4 { font-size: 13px; font-weight: 900; color: #0f172a; margin-bottom: 4px; }
+    .sol-card p  { font-size: 12px; color: #475569; line-height: 1.6; }
+
+    /* ── FEATURES ── */
+    .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .feat-card {
+      border-radius: 16px; padding: 22px 16px;
+      text-align: center; color: #ffffff;
+    }
+    .feat-icon { font-size: 32px; display: block; margin-bottom: 10px; }
+    .feat-card h4 { font-size: 13px; font-weight: 900; color: #ffffff; margin-bottom: 6px; }
+    .feat-card p  { font-size: 11px; color: rgba(255,255,255,0.9); line-height: 1.6; }
+
+    /* ── PAT ── */
+    .pat-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+    .pat-step {
+      flex: 1; min-width: 110px;
+      background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+      border: 1.5px solid #c7d2fe;
+      border-radius: 14px; padding: 16px 10px; text-align: center;
+    }
+    .pat-num {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #ffffff; font-size: 13px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .pat-step h4 { font-size: 12px; font-weight: 800; color: #3730a3; margin-bottom: 4px; }
+    .pat-step p  { font-size: 11px; color: #4338ca; line-height: 1.4; }
+    .pat-report {
+      margin-top: 14px; padding: 16px 20px;
+      background: #eef2ff; border-radius: 14px;
+      border-left: 4px solid #6366f1;
+    }
+    .pat-report p { font-size: 13px; color: #3730a3; line-height: 1.7; }
+
+    /* ── URDU ── */
+    .urdu-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 4px; }
+    .urdu-card {
+      border-radius: 14px; padding: 18px 16px;
+    }
+    .urdu-card h4 { font-size: 13px; font-weight: 900; color: #0f172a; margin-bottom: 6px; }
+    .urdu-card p  { font-size: 12px; color: #475569; line-height: 1.6; }
+    .urdu-sample {
+      margin-top: 12px; padding: 12px 16px;
+      background: #f5f3ff; border-radius: 12px;
+      border: 1px solid #ddd6fe;
+      direction: rtl; text-align: right;
+      font-size: 18px; color: #4c1d95; line-height: 2;
+    }
+
+    /* ── TECH ── */
+    .tech-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 4px; }
+    .tech-chip {
+      background: #f8faff; border: 2px solid #e0e7ff;
+      border-radius: 12px; padding: 14px 10px;
+      text-align: center; font-size: 12px; font-weight: 700; color: #3730a3;
+    }
+    .tech-chip .ti { font-size: 22px; display: block; margin-bottom: 6px; }
+
+    /* ── BLOOM ── */
+    .bloom-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-top: 4px; }
+    .bloom-card { border-radius: 12px; padding: 14px 8px; text-align: center; }
+    .bloom-card .bn { font-size: 18px; font-weight: 900; display: block; margin-bottom: 4px; }
+    .bloom-card h4 { font-size: 11px; font-weight: 900; margin-bottom: 3px; }
+    .bloom-card p  { font-size: 10px; line-height: 1.4; opacity: 0.85; }
+
+    /* ── IMPACT ── */
+    .impact-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 4px; }
+    .impact-card {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      border-radius: 16px; padding: 22px 12px;
+      text-align: center; color: #ffffff;
+    }
+    .impact-card .in { font-size: 30px; font-weight: 900; color: #fbbf24; display: block; margin-bottom: 4px; }
+    .impact-card p { font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 600; line-height: 1.4; }
+
+    /* ── TEAM ── */
+    .team-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-top: 4px; }
+    .team-card {
+      background: linear-gradient(135deg, #1e1b4b, #3730a3);
+      border-radius: 18px; padding: 26px 22px;
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .team-avi {
+      width: 60px; height: 60px; border-radius: 16px;
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; flex-shrink: 0;
+    }
+    .team-card h4 { font-size: 17px; font-weight: 900; color: #ffffff; margin-bottom: 4px; }
+    .team-card .role { font-size: 12px; color: #a5b4fc; font-weight: 700; margin-bottom: 8px; }
+    .team-card .bio  { font-size: 12px; color: rgba(255,255,255,0.82); line-height: 1.6; }
+
+    /* ── CTA ── */
+    .cta {
+      background: linear-gradient(135deg, #0f0c29 0%, #312e81 50%, #1e1b4b 100%);
+      border-radius: 24px; padding: 44px 40px;
+      text-align: center; color: #ffffff;
+      box-shadow: 0 16px 48px rgba(79,70,229,0.3);
+    }
+    .cta h2 { font-size: 30px; font-weight: 900; color: #ffffff; margin-bottom: 12px; }
+    .cta p  { font-size: 15px; color: rgba(255,255,255,0.85); max-width: 520px; margin: 0 auto 28px; line-height: 1.7; }
+    .cta-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .cta-tag {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px; padding: 8px 22px;
+      font-size: 13px; font-weight: 700; color: #fde68a;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center; padding: 28px 0 0;
+      font-size: 13px; color: #94a3b8; font-weight: 600;
+    }
+
+    /* ── PRINT BTN ── */
+    .print-btn {
+      position: fixed; bottom: 28px; right: 28px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #ffffff; border: none; border-radius: 16px;
+      padding: 14px 26px; font-size: 14px; font-weight: 800;
+      cursor: pointer; box-shadow: 0 8px 28px rgba(99,102,241,0.45);
+      z-index: 999; transition: transform 0.15s;
+    }
+    .print-btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero">
+    <div class="vision-ribbon">
+      ✨ <strong>Ms Sharmeen Asif's Vision:</strong>
+      "Empowering every student with Advanced AI · IT · CS Education — for All, regardless of background or location."
+    </div>
+    <div class="hero-body">
+      <div class="badge">🏆 GDG Hackathon 2026 — Project Submission</div>
+      <div class="hero-sub">AI-Powered Education Platform</div>
+      <h1>Pak AI <span>Tutor</span></h1>
+      <p class="tagline">
+        Pakistan's first comprehensive AI-powered learning platform — combining intelligent tutoring,
+        psychological assessment, and mastery-based learning for every student in English &amp; Urdu.
+      </p>
+      <div class="hero-pills">
+        <span class="hero-pill">🤖 OpenAI GPT-4o</span>
+        <span class="hero-pill">⚛️ React + Node.js</span>
+        <span class="hero-pill">🎓 Grade 6 – University</span>
+        <span class="hero-pill">🌍 English &amp; Pakistani Urdu</span>
+        <span class="hero-pill">🇵🇰 Built in Pakistan</span>
+      </div>
+      <hr class="hero-divider"/>
+      <div class="hero-team">
+        <div class="hero-member">
+          <div class="hero-avatar">👩‍💼</div>
+          <div>
+            <div class="hero-member-name">Ms Sharmeen Asif</div>
+            <div class="hero-member-role">Founder &amp; Visionary / Educator</div>
+          </div>
+        </div>
+        <div class="hero-member">
+          <div class="hero-avatar">👨‍💻</div>
+          <div>
+            <div class="hero-member-name">Asif Ali</div>
+            <div class="hero-member-role">Lead Developer / Full-Stack Engineer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ PROBLEM ═══════ -->
+  <section>
+    <div class="section-tag">❌ The Problem</div>
+    <h2>Why Students Are Falling Behind</h2>
+    <p class="section-desc">
+      In Pakistan and across the developing world, millions of students lack access to quality,
+      personalized education. Traditional classrooms cannot adapt to every individual's pace,
+      learning style, or emotional state.
+    </p>
+    <div class="problem-grid">
+      <div class="prob-card">
+        <span class="ei">📚</span>
+        <p>One-size-fits-all teaching ignores individual learning styles and pace</p>
+      </div>
+      <div class="prob-card">
+        <span class="ei">💸</span>
+        <p>Quality tutoring is expensive and inaccessible for most Pakistani families</p>
+      </div>
+      <div class="prob-card">
+        <span class="ei">🧠</span>
+        <p>No tools exist to understand a student's psychological learning state</p>
+      </div>
+      <div class="prob-card">
+        <span class="ei">🌐</span>
+        <p>Language barrier — all major AI education tools work in English only</p>
+      </div>
+      <div class="prob-card">
+        <span class="ei">📉</span>
+        <p>Students don't know their weak areas or how to systematically improve</p>
+      </div>
+      <div class="prob-card">
+        <span class="ei">😟</span>
+        <p>No system to track student motivation, emotional wellness or consistency</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ SOLUTION ═══════ -->
+  <section>
+    <div class="section-tag">✅ Our Solution</div>
+    <h2>Pak AI Tutor — One Platform, Every Student's Need</h2>
+    <p class="section-desc">
+      A single comprehensive platform combining intelligent tutoring, personalized assessments,
+      psychological profiling, bilingual support, and gamification — making world-class education
+      available to every student, free of charge.
+    </p>
+    <div class="solution-grid">
+      <div class="sol-card" style="background:#eef2ff;">
+        <div class="sol-icon" style="background:linear-gradient(135deg,#6366f1,#4338ca);">🤖</div>
+        <div>
+          <h4>AI Personal Tutor</h4>
+          <p>24/7 AI tutor that answers any academic question, draws geometric shapes and solves problems step-by-step in both English and authentic Pakistani Urdu.</p>
+        </div>
+      </div>
+      <div class="sol-card" style="background:#fdf4ff;">
+        <div class="sol-icon" style="background:linear-gradient(135deg,#a855f7,#7c3aed);">🧬</div>
+        <div>
+          <h4>PAT Psychological Assessment</h4>
+          <p>Our flagship feature — a 5-step Personal Assessment Test that analyzes learning style, motivation, emotional wellness and generates a personalized AI learning profile.</p>
+        </div>
+      </div>
+      <div class="sol-card" style="background:#f0fdf4;">
+        <div class="sol-icon" style="background:linear-gradient(135deg,#10b981,#047857);">🧠</div>
+        <div>
+          <h4>Mastery-Based Learning</h4>
+          <p>Bloom's Taxonomy 5-level mastery coaching — students must truly understand each level before advancing, ensuring deep learning not surface memorization.</p>
+        </div>
+      </div>
+      <div class="sol-card" style="background:#fff7ed;">
+        <div class="sol-icon" style="background:linear-gradient(135deg,#f97316,#dc2626);">📸</div>
+        <div>
+          <h4>AI Homework Solver</h4>
+          <p>Students photograph or describe their homework — AI provides step-by-step solution with subject-named PDF export in English or Urdu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ KEY FEATURES ═══════ -->
+  <section>
+    <div class="section-tag">⚡ Key Features</div>
+    <h2>Everything a Student Needs to Excel</h2>
+    <p class="section-desc">10+ AI-powered features covering every aspect of student learning and teacher support.</p>
+    <div class="features-grid">
+      <div class="feat-card" style="background:linear-gradient(135deg,#6366f1,#4338ca);">
+        <span class="feat-icon">💬</span>
+        <h4>AI Chat Tutor</h4>
+        <p>Ask any academic question. Shapes, formulas, concepts — answered instantly in English or Pakistani Urdu.</p>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#ec4899,#be185d);">
+        <span class="feat-icon">📊</span>
+        <h4>AI Quiz Generator</h4>
+        <p>Upload a photo or enter a topic — AI generates MCQ quizzes with highlighted correct answers and score tracking.</p>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#10b981,#047857);">
+        <span class="feat-icon">🤖</span>
+        <h4>AI Practice Engine</h4>
+        <p>Generate unlimited practice exercises at Easy, Medium or Hard difficulty for any subject or topic.</p>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#f97316,#dc2626);">
+        <span class="feat-icon">🛠️</span>
+        <h4>AI Tools Hub (7 Tools)</h4>
+        <p>Concept explainer, flashcard generator, worksheet animator, lesson planner, doubt solver &amp; more.</p>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#0ea5e9,#2563eb);">
+        <span class="feat-icon">🎬</span>
+        <h4>Video Library</h4>
+        <p>27+ subject-wise educational videos with YouTube integration. 6 subjects covered — admin can add more.</p>
+      </div>
+      <div class="feat-card" style="background:linear-gradient(135deg,#a855f7,#6d28d9);">
+        <span class="feat-icon">🏆</span>
+        <h4>Gamification</h4>
+        <p>XP points, streaks, levels, badges, daily challenges and leaderboard keep students motivated daily.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ PAT FLAGSHIP ═══════ -->
+  <section>
+    <div class="section-tag">🧬 Flagship Innovation</div>
+    <h2>PAT — Personal Assessment Test</h2>
+    <p class="section-desc">
+      The most innovative feature of Pak AI Tutor. A 5-step psychological assessment that understands
+      each student's learning behavior, emotional state, and motivation — then generates a detailed
+      AI-powered psychological learning profile with personalized recommendations.
+    </p>
+    <div class="pat-row">
+      <div class="pat-step">
+        <div class="pat-num">1</div>
+        <h4>📅 Activity Log</h4>
+        <p>Subjects &amp; hours studied today</p>
+      </div>
+      <div class="pat-step">
+        <div class="pat-num">2</div>
+        <h4>💭 Emotional Check</h4>
+        <p>Current feelings &amp; confidence level</p>
+      </div>
+      <div class="pat-step">
+        <div class="pat-num">3</div>
+        <h4>🎯 Challenges</h4>
+        <p>Biggest difficulties &amp; strengths</p>
+      </div>
+      <div class="pat-step">
+        <div class="pat-num">4</div>
+        <h4>🚀 Future Plans</h4>
+        <p>Next session plan &amp; weekly goals</p>
+      </div>
+      <div class="pat-step">
+        <div class="pat-num">5</div>
+        <h4>🧬 AI Report</h4>
+        <p>Full psychological learning profile</p>
+      </div>
+    </div>
+    <div class="pat-report">
+      <p>
+        <strong>AI Report includes:</strong> Learning Style (Visual / Auditory / Kinesthetic / Reading-Writing) ·
+        Motivation Score · Emotional Wellness Score · Focus Level · Consistency Score ·
+        Personalized Study Recommendations · Next Session Plan · Encouragement Message
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ MASTERY COACH ═══════ -->
+  <section>
+    <div class="section-tag">🧠 Mastery Coach</div>
+    <h2>Bloom's Taxonomy — 5 Levels of Deep Learning</h2>
+    <p class="section-desc">
+      Research-backed mastery-based learning ensures students truly understand concepts, not just memorize them.
+      AI generates fresh questions at every level. Students must score 60%+ to advance.
+    </p>
+    <div class="bloom-grid">
+      <div class="bloom-card" style="background:#f1f5f9; border:2px solid #94a3b8;">
+        <span class="bn" style="color:#475569;">1</span>
+        <h4 style="color:#334155;">Remember</h4>
+        <p style="color:#64748b;">Recall facts &amp; basic concepts</p>
+      </div>
+      <div class="bloom-card" style="background:#f0fdf4; border:2px solid #16a34a;">
+        <span class="bn" style="color:#16a34a;">2</span>
+        <h4 style="color:#14532d;">Understand</h4>
+        <p style="color:#166534;">Explain ideas in own words</p>
+      </div>
+      <div class="bloom-card" style="background:#eff6ff; border:2px solid #2563eb;">
+        <span class="bn" style="color:#2563eb;">3</span>
+        <h4 style="color:#1e3a8a;">Apply</h4>
+        <p style="color:#1d4ed8;">Use knowledge in new situations</p>
+      </div>
+      <div class="bloom-card" style="background:#f5f3ff; border:2px solid #7c3aed;">
+        <span class="bn" style="color:#7c3aed;">4</span>
+        <h4 style="color:#4c1d95;">Analyze</h4>
+        <p style="color:#5b21b6;">Draw connections between ideas</p>
+      </div>
+      <div class="bloom-card" style="background:#fff1f2; border:2px solid #dc2626;">
+        <span class="bn" style="color:#dc2626;">5</span>
+        <h4 style="color:#7f1d1d;">Evaluate</h4>
+        <p style="color:#991b1b;">Justify decisions &amp; arguments</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ URDU SUPPORT ═══════ -->
+  <section>
+    <div class="section-tag">🇵🇰 Bilingual Support</div>
+    <h2>Built for Pakistani Students — Full Urdu Support</h2>
+    <p class="section-desc">
+      Most AI education tools worldwide are English-only. Pak AI Tutor is designed from the ground up
+      for Pakistani students who think, read, and learn in Urdu.
+    </p>
+    <div class="urdu-grid">
+      <div class="urdu-card" style="background:#f5f3ff; border:1.5px solid #ddd6fe;">
+        <h4>Authentic Pakistani Urdu</h4>
+        <p>AI responds in proper Pakistani Urdu — not machine-translated Hindi. We explicitly train the AI to use Pakistani vocabulary (خوش آمدید not سواگت, براہ کرم not کرپیا).</p>
+      </div>
+      <div class="urdu-card" style="background:#fdf4ff; border:1.5px solid #e9d5ff;">
+        <h4>Jameel Noori Nastaleeq Font</h4>
+        <p>Beautiful right-to-left Urdu display using the Jameel Noori Nastaleeq font — the authentic calligraphy style Pakistani students are familiar with.</p>
+      </div>
+    </div>
+    <div class="urdu-sample">
+      خوش آمدید! میں آپ کا ذاتی AI استاد ہوں۔ کوئی بھی سوال پوچھیں — میں آپ کی مدد کروں گا۔
+    </div>
+  </section>
+
+  <!-- ═══════ TECH STACK ═══════ -->
+  <section>
+    <div class="section-tag">🔧 Technology Stack</div>
+    <h2>Built with Modern, Scalable Technology</h2>
+    <div class="tech-grid">
+      <div class="tech-chip"><span class="ti">⚛️</span>React + Vite</div>
+      <div class="tech-chip"><span class="ti">🟢</span>Node.js + Express</div>
+      <div class="tech-chip"><span class="ti">🤖</span>OpenAI GPT-4o</div>
+      <div class="tech-chip"><span class="ti">🎨</span>Tailwind CSS</div>
+      <div class="tech-chip"><span class="ti">🗄️</span>Neon PostgreSQL</div>
+      <div class="tech-chip"><span class="ti">🔐</span>JWT Auth</div>
+      <div class="tech-chip"><span class="ti">📺</span>YouTube API</div>
+      <div class="tech-chip"><span class="ti">☁️</span>Cloud Deployable</div>
+    </div>
+    <div style="margin-top:16px;padding:14px 20px;background:#f0fdf4;border-radius:14px;border-left:4px solid #10b981;">
+      <p style="color:#065f46;font-size:13px;line-height:1.7;">
+        <strong>AI Capabilities:</strong> GPT-4o Vision for homework image analysis ·
+        GPT-4 for tutoring, quiz generation &amp; PAT psychological profiling ·
+        Bilingual English / Pakistani Urdu across all features ·
+        JSON-structured AI output for PAT reports and quiz results
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ IMPACT ═══════ -->
+  <section>
+    <div class="section-tag">🌍 Impact &amp; Scale</div>
+    <h2>Transforming Education Across Pakistan</h2>
+    <p class="section-desc">Pak AI Tutor is designed to serve millions of students who currently have no access to quality personalized education.</p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <span class="in">10+</span>
+        <p>AI-Powered Features in one platform</p>
+      </div>
+      <div class="impact-card">
+        <span class="in">2</span>
+        <p>Languages — English &amp; Pakistani Urdu</p>
+      </div>
+      <div class="impact-card">
+        <span class="in">6</span>
+        <p>Core Subjects with full AI depth</p>
+      </div>
+      <div class="impact-card">
+        <span class="in">∞</span>
+        <p>Students — cloud scalable, free to use</p>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:16px 20px;background:#fdf4ff;border-radius:14px;border-left:4px solid #a855f7;">
+      <p style="color:#581c87;font-size:13px;line-height:1.7;">
+        <strong>SDG Alignment:</strong> Pak AI Tutor directly supports
+        <strong>UN SDG Goal 4 — Quality Education</strong> by making advanced AI-powered
+        personalized learning accessible to every student regardless of financial situation,
+        geographic location, or language background.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ TEAM ═══════ -->
+  <section>
+    <div class="section-tag">👥 The Team</div>
+    <h2>Built by Passionate Educators &amp; Developers</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avi">👩‍💼</div>
+        <div>
+          <h4>Ms Sharmeen Asif</h4>
+          <div class="role">Founder &amp; Visionary / Educator</div>
+          <div class="bio">
+            Passionate educator with a mission to bring Advanced AI, IT and Computer Science
+            education to every student in Pakistan — regardless of their financial background
+            or geographic location. The vision and driving force behind Pak AI Tutor.
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avi">👨‍💻</div>
+        <div>
+          <h4>Asif Ali</h4>
+          <div class="role">Lead Developer / Full-Stack Engineer</div>
+          <div class="bio">
+            Full-stack web developer specializing in React, Node.js and AI integration.
+            Designed and built all platform features, AI pipelines, bilingual Urdu support,
+            PAT assessment system, and complete UI/UX from scratch.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ CTA ═══════ -->
+  <div class="cta">
+    <h2>🚀 Ready to Revolutionize Education</h2>
+    <p>
+      Pak AI Tutor is not just a product — it is a movement to ensure that every student in Pakistan,
+      no matter where they come from, gets the quality AI-powered education they deserve.
+    </p>
+    <div class="cta-tags">
+      <span class="cta-tag">🤖 AI + Education</span>
+      <span class="cta-tag">🌍 Social Impact</span>
+      <span class="cta-tag">🧬 Psychological Learning</span>
+      <span class="cta-tag">🇵🇰 Made in Pakistan</span>
+      <span class="cta-tag">🏆 GDG Hackathon 2026</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    Pak AI Tutor &nbsp;·&nbsp; Developed by Asif Ali &amp; Ms Sharmeen Asif &nbsp;·&nbsp;
+    GDG Hackathon 2026 &nbsp;·&nbsp; github.com/shery123pk/eduai-pro
+  </div>
+
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Save as PDF</button>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import LoadingSpinner from '../components/LoadingSpinner';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,10 +12,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const user = await login(email, password);
-      // Redirect based on role
       navigate(user.role === 'teacher' ? '/teacher' : '/student');
     } catch (error) {
       console.error('Login error:', error);
@@ -25,98 +22,124 @@ const Login = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
-      <div className="absolute top-20 left-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
+  const fillDemo = (type) => {
+    setEmail(type === 'student' ? 'student@test.com' : 'teacher@test.com');
+    setPassword('demo123');
+  };
 
-      <div className="relative z-10 w-full max-w-md">
-        {/* Logo and title */}
-        <div className="text-center mb-8">
-          <div className="gradient-primary w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/50">
-            <span className="text-white font-bold text-3xl">E</span>
+  return (
+    <div className="min-h-screen flex" style={{ background: '#eef2ff' }}>
+      {/* Left branding panel */}
+      <div className="hidden lg:flex flex-col justify-between w-2/5 p-10" style={{ background: 'linear-gradient(160deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%)' }}>
+        <div>
+          <div className="flex items-center gap-3 mb-12">
+            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-white font-black text-xl shadow-lg">P</div>
+            <div>
+              <span className="text-2xl font-black text-white">Pak AI</span>
+              <span className="text-2xl font-black text-indigo-200">Tutor</span>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold gradient-text mb-2">EduAI Pro</h1>
-          <p className="text-slate-400">AI-Powered Learning Platform</p>
+
+          <h1 className="text-4xl font-black text-white leading-tight mb-4" style={{ color: 'white' }}>
+            Learn Smarter with<br />
+            <span className="text-indigo-200">AI-Powered</span> Education
+          </h1>
+          <p className="text-indigo-100 text-lg leading-relaxed font-medium">
+            Courses, mastery coaching, AI practice, and 6 learning tools — all in one platform.
+          </p>
         </div>
 
-        {/* Login form */}
-        <div className="glassmorphism rounded-2xl p-8 shadow-2xl">
-          <h2 className="text-2xl font-bold text-white mb-6">Welcome Back</h2>
+        <div className="space-y-4">
+          {[
+            { icon: '📚', title: 'Structured Courses', text: 'Video lessons with mastery tracking' },
+            { icon: '🧠', title: 'Mastery Coach', text: "Bloom's Taxonomy 5-level journey" },
+            { icon: '🛠️', title: '6 AI Tools', text: 'Explainer, flashcards, planner & more' },
+            { icon: '🤖', title: 'AI Practice', text: 'Generate exercises on any topic' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-3 bg-white/10 backdrop-blur rounded-xl p-3">
+              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-xl flex-shrink-0">{item.icon}</div>
+              <div>
+                <p className="text-white font-bold text-sm">{item.title}</p>
+                <p className="text-indigo-200 text-xs">{item.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right login panel */}
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="w-full max-w-sm">
+
+          {/* Mobile logo */}
+          <div className="flex items-center gap-3 mb-8 lg:hidden">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black shadow-md">P</div>
+            <div>
+              <span className="text-xl font-black text-slate-900">Pak AI</span>
+              <span className="text-xl font-black text-indigo-600">Tutor</span>
+            </div>
+          </div>
+
+          <h2 className="text-3xl font-black text-slate-900 mb-1">Welcome back!</h2>
+          <p className="text-slate-500 text-sm mb-8">Sign in to continue your learning journey</p>
+
+          {/* Demo Quick Fill */}
+          <div className="flex gap-2 mb-6">
+            <button onClick={() => fillDemo('student')}
+              className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-all">
+              🎓 Demo Student
+            </button>
+            <button onClick={() => fillDemo('teacher')}
+              className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-all">
+              👨‍🏫 Demo Teacher
+            </button>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
+              <label className="block text-sm font-bold text-slate-700 mb-1.5">Email</label>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="input-field"
-                placeholder="student@eduai.com"
+                onChange={e => setEmail(e.target.value)}
+                placeholder="you@example.com"
                 required
+                className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-3 focus:ring-indigo-100 text-sm transition-all font-medium"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+              <label className="block text-sm font-bold text-slate-700 mb-1.5">Password</label>
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field"
+                onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
+                className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-3 focus:ring-indigo-100 text-sm transition-all font-medium"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full btn-primary flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl font-black text-white text-base transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-indigo-200"
+              style={{ background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)' }}
             >
-              {loading ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Logging in...</span>
-                </>
-              ) : (
-                'Login'
-              )}
+              {loading ? 'Signing in...' : 'Sign In →'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-slate-400">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-primary hover:text-primary/80 font-semibold">
-                Register here
-              </Link>
-            </p>
-          </div>
+          <p className="text-center text-sm text-slate-500 mt-6">
+            No account?{' '}
+            <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-bold transition-colors">
+              Create one free
+            </Link>
+          </p>
 
-          {/* Demo credentials */}
-          <div className="mt-6 pt-6 border-t border-slate-700">
-            <p className="text-xs text-slate-500 mb-2">Demo Credentials:</p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="glassmorphism p-2 rounded">
-                <p className="text-slate-400">Student:</p>
-                <p className="text-slate-300">ali@student.com</p>
-              </div>
-              <div className="glassmorphism p-2 rounded">
-                <p className="text-slate-400">Teacher:</p>
-                <p className="text-slate-300">ahmad.khan@eduai.com</p>
-              </div>
-            </div>
-            <p className="text-xs text-slate-500 mt-2">Password: student123 / teacher123</p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center mt-6 text-slate-500 text-sm">
-          <p>Built for BWAI Hackathon 2026</p>
-          <p className="mt-1">DHA Suffa University, Karachi</p>
+          <p className="text-center text-xs text-slate-400 mt-6 bg-white rounded-lg p-2.5 border border-slate-100">
+            Demo mode — any email/password works
+          </p>
         </div>
       </div>
     </div>

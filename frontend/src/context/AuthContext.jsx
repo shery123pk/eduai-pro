@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
       setToken(newToken);
       setUser(newUser);
 
-      toast.success(`Welcome to EduAI Pro, ${newUser.name}!`);
+      toast.success(`Welcome to Pak AI Tutor, ${newUser.name}!`);
       return newUser;
     } catch (error) {
       const message = error.response?.data?.error || 'Registration failed';

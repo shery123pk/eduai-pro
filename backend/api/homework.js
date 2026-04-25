@@ -78,7 +78,7 @@ Format your response clearly with numbered steps.`,
 4. Give the final answer`
     },
     urdu: {
-      mathematics: `آپ ریاضی کے ماہر استاد ہیں۔ اس ہوم ورک کا تجزیہ کریں اور:
+      mathematics: `آپ صرف پاکستانی اردو استعمال کریں — ہندی الفاظ بالکل نہ لکھیں۔ "خوش آمدید" کہیں نہ کہ "سواگت"، "براہ کرم" کہیں نہ کہ "کرپیا"۔\n\nآپ ریاضی کے ماہر استاد ہیں۔ اس ہوم ورک کا تجزیہ کریں اور:
 1. پہلے واضح کریں کہ سوال میں کیا پوچھا جا رہا ہے
 2. قدم بہ قدم تفصیلی وضاحت کے ساتھ حل کریں
 3. تمام کام اور حسابات دکھائیں
@@ -93,10 +93,10 @@ Format your response clearly with numbered steps.`,
 ...
 
 **حتمی جواب:** [جواب]`,
-      physics: `آپ طبیعیات کے ماہر استاد ہیں۔ اس مسئلے کو حل کریں اور قدم بہ قدم وضاحت دیں۔`,
-      chemistry: `آپ کیمسٹری کے ماہر استاد ہیں۔ اس مسئلے کو حل کریں اور قدم بہ قدم وضاحت دیں۔`,
-      english: `آپ انگریزی کے ماہر استاد ہیں۔ اس ہوم ورک کا تجزیہ کریں اور تفصیلی جواب دیں۔`,
-      general: `آپ ماہر استاد ہیں۔ اس ہوم ورک کو حل کریں اور قدم بہ قدم وضاحت دیں۔`
+      physics:   `آپ صرف پاکستانی اردو استعمال کریں، ہندی الفاظ سے پرہیز کریں۔\n\nآپ طبیعیات کے ماہر استاد ہیں۔ اس مسئلے کو حل کریں اور قدم بہ قدم وضاحت دیں۔`,
+      chemistry: `آپ صرف پاکستانی اردو استعمال کریں، ہندی الفاظ سے پرہیز کریں۔\n\nآپ کیمسٹری کے ماہر استاد ہیں۔ اس مسئلے کو حل کریں اور قدم بہ قدم وضاحت دیں۔`,
+      english:   `آپ صرف پاکستانی اردو استعمال کریں، ہندی الفاظ سے پرہیز کریں۔\n\nآپ انگریزی کے ماہر استاد ہیں۔ اس ہوم ورک کا تجزیہ کریں اور تفصیلی جواب دیں۔`,
+      general:   `آپ صرف پاکستانی اردو استعمال کریں، ہندی الفاظ سے پرہیز کریں۔\n\nآپ ماہر استاد ہیں۔ اس ہوم ورک کو حل کریں اور قدم بہ قدم وضاحت دیں۔`
     }
   };
 
@@ -105,12 +105,15 @@ Format your response clearly with numbered steps.`,
   // Analyze image with OpenAI Vision
   const solution = await analyzeImage(imageBase64, prompt);
 
-  // Save to database
-  await query(
-    `INSERT INTO homework_submissions (student_id, subject, ai_solution, created_at)
-     VALUES ($1, $2, $3, NOW())`,
-    [studentId, subject, solution]
-  );
+  // Save to database (skip in demo mode)
+  const { pool } = await import('../lib/neon.js');
+  if (pool) {
+    await query(
+      `INSERT INTO homework_submissions (student_id, subject, ai_solution, created_at)
+       VALUES ($1, $2, $3, NOW())`,
+      [studentId, subject, solution]
+    );
+  }
 
   res.json({
     success: true,

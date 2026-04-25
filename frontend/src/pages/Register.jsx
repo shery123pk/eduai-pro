@@ -36,9 +36,9 @@ const Register = () => {
         {/* Logo and title */}
         <div className="text-center mb-8">
           <div className="gradient-primary w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/50">
-            <span className="text-white font-bold text-3xl">E</span>
+            <span className="text-white font-bold text-3xl">P</span>
           </div>
-          <h1 className="text-4xl font-bold gradient-text mb-2">EduAI Pro</h1>
+          <h1 className="text-4xl font-bold gradient-text mb-2">Pak AI Tutor</h1>
           <p className="text-slate-400">Create your account</p>
         </div>
 

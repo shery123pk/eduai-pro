@@ -1,7 +1,22 @@
 // EduAI Pro Backend Server
+// CRITICAL: Load environment variables FIRST before any other imports
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(__dirname, '.env') });
+
+// Debug: Verify environment variables are loaded
+console.log('🔍 Environment Check:');
+console.log('  PORT:', process.env.PORT);
+console.log('  OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? `${process.env.OPENAI_API_KEY.substring(0, 15)}...` : 'NOT LOADED');
+console.log('  NODE_ENV:', process.env.NODE_ENV);
+
+// Now import everything else AFTER env vars are loaded
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { errorHandler } from './middleware/errorHandler.js';
 
 // Import API routes
@@ -13,9 +28,10 @@ import quizRoutes from './api/quiz.js';
 import weakareaRoutes from './api/weakarea.js';
 import uploadRoutes from './api/upload.js';
 import coursesRoutes from './api/courses.js';
-
-// Load environment variables
-dotenv.config();
+import learningPathRoutes from './api/learningpath.js';
+import gamificationRoutes from './api/gamification.js';
+import curriculumRoutes from './api/curriculum.js';
+import exercisesRoutes from './api/exercises.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,8 +50,8 @@ app.use((req, res, next) => {
 // Health check
 app.get('/', (req, res) => {
   res.json({
-    message: 'EduAI Pro API Server',
-    version: '1.0.0',
+    message: 'EduAI Pro API Server - Prize-Winning Edition',
+    version: '2.0.0',
     status: 'running',
     endpoints: {
       auth: '/api/auth',
@@ -45,7 +61,18 @@ app.get('/', (req, res) => {
       quiz: '/api/quiz',
       weakarea: '/api/weakarea',
       upload: '/api/upload',
-      courses: '/api/courses'
+      courses: '/api/courses',
+      learningPath: '/api/learning-path',
+      gamification: '/api/gamification',
+      curriculum: '/api/curriculum',
+      exercises: '/api/exercises'
+    },
+    features: {
+      aiPowered: true,
+      personalizedLearning: true,
+      gamification: true,
+      urduSupport: true,
+      voiceAI: 'Coming soon'
     }
   });
 });
@@ -63,6 +90,10 @@ app.use('/api/quiz', quizRoutes);
 app.use('/api/weakarea', weakareaRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/courses', coursesRoutes);
+app.use('/api/learning-path', learningPathRoutes);
+app.use('/api/gamification', gamificationRoutes);
+app.use('/api/curriculum', curriculumRoutes);
+app.use('/api/exercises', exercisesRoutes);
 
 // 404 handler
 app.use((req, res) => {

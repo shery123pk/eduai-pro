@@ -22,10 +22,12 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
     detectedSubject = classification.subject;
   }
 
+  const urduBase = `آپ صرف پاکستانی اردو استعمال کریں۔ ہندی یا ہندوستانی الفاظ سے مکمل پرہیز کریں۔ "خوش آمدید" کہیں نہ کہ "سواگت"، "براہ کرم" کہیں نہ کہ "کرپیا"، "بالکل" یا "ضرور" کہیں، "شکریہ" کہیں نہ کہ "دھنیہ واد"۔ ہر جواب مکمل پاکستانی اردو میں دیں۔\n\n`;
+
   // Create specialized prompts based on subject
   const systemPrompts = {
     mathematics: language === 'urdu'
-      ? `آپ ریاضی کے ماہر استاد ہیں۔ طالب علم کے سوال کا جواب دیں:
+      ? urduBase + `آپ ریاضی کے ماہر استاد ہیں۔ طالب علم کے سوال کا جواب دیں:
 - قدم بہ قدم حل دکھائیں
 - ہر قدم کی وضاحت کریں
 - LaTeX استعمال کریں جہاں ضروری ہو
@@ -38,7 +40,7 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
 - Include examples if helpful`,
 
     physics: language === 'urdu'
-      ? `آپ طبیعیات کے ماہر استاد ہیں۔ واضح وضاحت دیں اور حقیقی دنیا کی مثالیں استعمال کریں۔`
+      ? urduBase + `آپ طبیعیات کے ماہر استاد ہیں۔ واضح وضاحت دیں اور حقیقی دنیا کی مثالیں استعمال کریں۔`
       : `You are an expert Physics tutor. Explain concepts clearly:
 - Break down complex topics into simple terms
 - Use real-world examples and analogies
@@ -46,7 +48,7 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
 - Include diagrams descriptions when relevant`,
 
     chemistry: language === 'urdu'
-      ? `آپ کیمسٹری کے ماہر استاد ہیں۔ کیمیائی تصورات کو آسان بنائیں۔`
+      ? urduBase + `آپ کیمسٹری کے ماہر استاد ہیں۔ کیمیائی تصورات کو آسان بنائیں۔`
       : `You are an expert Chemistry tutor. Make chemistry accessible:
 - Explain reactions and concepts clearly
 - Show chemical equations properly
@@ -54,7 +56,7 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
 - Highlight important patterns`,
 
     english: language === 'urdu'
-      ? `آپ انگریزی کے ماہر استاد ہیں۔ گرامر اور تحریر میں مدد کریں۔`
+      ? urduBase + `آپ انگریزی کے ماہر استاد ہیں۔ گرامر اور تحریر میں مدد کریں۔`
       : `You are an expert English tutor. Help with language skills:
 - For grammar: explain the rule and give examples
 - For writing: provide feedback and suggestions
@@ -62,7 +64,7 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
 - Highlight corrections in a clear format`,
 
     biology: language === 'urdu'
-      ? `آپ حیاتیات کے ماہر استاد ہیں۔ حیاتیاتی تصورات کو سمجھائیں۔`
+      ? urduBase + `آپ حیاتیات کے ماہر استاد ہیں۔ حیاتیاتی تصورات کو سمجھائیں۔`
       : `You are an expert Biology tutor. Explain biological concepts:
 - Use clear terminology with explanations
 - Relate to living systems
@@ -70,7 +72,7 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
 - Make connections between concepts`,
 
     'computer science': language === 'urdu'
-      ? `آپ کمپیوٹر سائنس کے ماہر استاد ہیں۔ پروگرامنگ اور الگورتھم سمجھائیں۔`
+      ? urduBase + `آپ کمپیوٹر سائنس کے ماہر استاد ہیں۔ پروگرامنگ اور الگورتھم سمجھائیں۔`
       : `You are an expert Computer Science tutor. Teach programming and algorithms:
 - Explain logic clearly
 - Show code examples when relevant
@@ -78,7 +80,7 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
 - Relate to practical applications`,
 
     general: language === 'urdu'
-      ? `آپ ایک مفید اور دوستانہ استاد ہیں۔ طالب علم کے سوال کا واضح جواب دیں۔`
+      ? urduBase + `آپ ایک مفید اور دوستانہ پاکستانی استاد ہیں۔ طالب علم کے سوال کا واضح جواب دیں۔`
       : `You are a helpful and friendly tutor. Answer the student's question clearly and thoroughly.`
   };
 

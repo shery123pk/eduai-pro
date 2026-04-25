@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap');
 @import 'katex/dist/katex.min.css';
 
@@ -10,133 +11,488 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
-  @apply font-inter bg-slate-900 text-slate-100;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #eef2ff;
+  color: #1e293b;
+  overflow-x: hidden;
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-slate-800;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 800;
+  color: #0f172a;
 }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-600 rounded-full;
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #e2e8f0; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+/* Selection */
+::selection { background: rgba(99, 102, 241, 0.2); color: #1e293b; }
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-500;
+/* ========================================
+   BACKGROUND
+======================================== */
+
+.bg-ultra-modern {
+  background-color: #eef2ff;
+  min-height: 100vh;
 }
 
-/* Custom utilities */
-.glassmorphism {
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+/* ========================================
+   CARDS
+======================================== */
+
+.glass-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 8px rgba(99, 102, 241, 0.07);
 }
 
-.gradient-primary {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+.glass-ultra {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.edu-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.07);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
-/* Animation utilities */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.edu-card:hover {
+  border-color: #6366f1;
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.15);
+  transform: translateY(-2px);
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
+/* ========================================
+   BUTTONS
+======================================== */
+
+.btn-cyber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 }
 
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+.btn-cyber:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.btn-cyber:active {
+  transform: translateY(0);
 }
 
-/* Loading spinner */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.btn-modern {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
 }
 
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
-/* Urdu text styling */
-.urdu-text {
-  @apply font-urdu;
-  direction: rtl;
-  text-align: right;
-  line-height: 2;
-}
-
-/* Card hover effects */
-.card-hover {
-  @apply transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20;
-}
-
-/* Button styles */
-.btn-primary {
-  @apply px-6 py-3 rounded-lg gradient-primary text-white font-semibold
-         hover:opacity-90 active:scale-95 transition-all duration-200
-         shadow-lg shadow-primary/30;
+.btn-modern:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-  @apply px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold
-         hover:bg-slate-600 active:scale-95 transition-all duration-200;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #4b5563;
+  background-color: #f8fafc;
+  border: 1.5px solid #d1d5db;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.btn-secondary:hover {
+  background-color: #eef2ff;
+  color: #6366f1;
+  border-color: #6366f1;
+}
+
+/* ========================================
+   INPUTS
+======================================== */
+
+.input-modern {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #111827;
+  background-color: #ffffff;
+  border: 1.5px solid #d1d5db;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input-modern:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.input-modern::placeholder {
+  color: #9ca3af;
+}
+
+/* ========================================
+   TEXT STYLES
+======================================== */
+
+.neon-blue { color: #6366f1; }
+.neon-purple { color: #8b5cf6; }
+.neon-pink { color: #ec4899; }
+
+.gradient-modern {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.gradient-cyber {
+  background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+/* ========================================
+   PROGRESS BAR
+======================================== */
+
+.progress-modern {
+  height: 8px;
+  background-color: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill-modern {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  transition: width 0.6s ease;
+}
+
+/* ========================================
+   BADGES
+======================================== */
+
+.badge-modern {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #ede9fe;
+  color: #6366f1;
+  border: 1px solid #c4b5fd;
+}
+
+/* ========================================
+   CARD HOVER
+======================================== */
+
+.card-hover-modern {
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.card-hover-modern:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+  border-color: #6366f1;
+}
+
+.card-3d {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   SKELETON
+======================================== */
+
+.skeleton-modern {
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========================================
+   LOADER
+======================================== */
+
+.loader-modern {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+
+.animate-slide-in {
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-scale {
+  animation: fadeScale 0.3s ease-out;
+}
+
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-glow-pulse { animation: none; }
+.animate-shimmer { animation: none; }
+.animate-rotate-gradient { animation: none; }
+
+/* ========================================
+   SIDEBAR / NAV
+======================================== */
+
+.glassmorphism {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+}
+
+/* ========================================
+   CYBER GRID - REMOVED
+======================================== */
+
+.cyber-grid { display: none; }
+
+/* ========================================
+   FORM ELEMENTS
+======================================== */
+
+select.input-modern,
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ========================================
+   MASTERY LEVEL COLORS
+======================================== */
+
+.mastery-not-started { background-color: #f1f5f9; color: #64748b; }
+.mastery-attempted   { background-color: #fee2e2; color: #dc2626; }
+.mastery-familiar    { background-color: #fef3c7; color: #d97706; }
+.mastery-proficient  { background-color: #dbeafe; color: #2563eb; }
+.mastery-mastered    { background-color: #dcfce7; color: #16a34a; }
+
+/* ========================================
+   BLOOM'S TAXONOMY
+======================================== */
+
+.bloom-1 { background-color: #f8fafc; border-left: 4px solid #94a3b8; }
+.bloom-2 { background-color: #f0fdf4; border-left: 4px solid #16a34a; }
+.bloom-3 { background-color: #eff6ff; border-left: 4px solid #2563eb; }
+.bloom-4 { background-color: #f5f3ff; border-left: 4px solid #7c3aed; }
+.bloom-5 { background-color: #fff7ed; border-left: 4px solid #ea580c; }
+
+/* ========================================
+   UTILITY
+======================================== */
+
+.urdu-modern,
+.font-urdu {
+  font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Nafees Web Naskh', serif;
+  direction: rtl;
+  text-align: right;
+  line-height: 2.6;
+  font-size: 1.15em;
+  letter-spacing: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ========================================
+   SHAPE RENDERER
+======================================== */
+
+.shape-card {
+  background: linear-gradient(135deg, #f5f3ff 0%, #eef2ff 100%);
+  border: 1.5px solid #c4b5fd;
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+/* ========================================
+   MISSING GLOBAL CLASSES (used across pages)
+======================================== */
+
+.input-field {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #111827;
+  background-color: #ffffff;
+  border: 1.5px solid #d1d5db;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.input-field::placeholder {
+  color: #9ca3af;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-outline {
-  @apply px-6 py-3 rounded-lg border-2 border-primary text-primary font-semibold
-         hover:bg-primary hover:text-white active:scale-95 transition-all duration-200;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #6366f1;
+  background: transparent;
+  border: 2px solid #6366f1;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
 }
 
-/* Input styles */
-.input-field {
-  @apply w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600
-         text-slate-100 placeholder-slate-400
-         focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
-         transition-all duration-200;
+.btn-outline:hover {
+  background-color: #eef2ff;
 }
 
-/* Math rendering */
-.math-content {
-  @apply my-4 text-lg;
-}
-
-.math-content .katex {
-  @apply text-slate-100;
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
 }
