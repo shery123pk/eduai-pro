@@ -31,6 +31,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
+    // Demo mode — works without backend
+    const demoAccounts = {
+      'student@test.com': { id: 'demo-student', name: 'Demo Student', email: 'student@test.com', role: 'student' },
+      'teacher@test.com': { id: 'demo-teacher', name: 'Demo Teacher', email: 'teacher@test.com', role: 'teacher' },
+    };
+    if (demoAccounts[email] && password === 'demo123') {
+      const newUser = demoAccounts[email];
+      const newToken = 'demo-token-' + newUser.role;
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify(newUser));
+      setToken(newToken);
+      setUser(newUser);
+      toast.success(`Welcome back, ${newUser.name}!`);
+      return newUser;
+    }
+
     try {
       const response = await authAPI.login({ email, password });
       const { token: newToken, user: newUser } = response.data;
@@ -51,6 +67,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password, role) => {
+    // Demo mode — create account locally without backend
+    if (!import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL === 'http://localhost:5000') {
+      const newUser = { id: `demo-${Date.now()}`, name, email, role };
+      const newToken = 'demo-token-' + role + '-' + Date.now();
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify(newUser));
+      setToken(newToken);
+      setUser(newUser);
+      toast.success(`Welcome to Pak AI Tutor, ${name}!`);
+      return newUser;
+    }
+
     try {
       const response = await authAPI.register({ name, email, password, role });
       const { token: newToken, user: newUser } = response.data;
