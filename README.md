@@ -1,4 +1,14 @@
-# 🎓 EduAI Pro
+---
+title: Pak AITutor Backend
+emoji: 🎓
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
+# 🎓 Pak AITutor
 
 **Full-Stack AI Education Platform**
 Built for BWAI Hackathon 2026 | DHA Suffa University, Karachi
