@@ -39,6 +39,56 @@ function parseQuizJSON(text) {
   return null;
 }
 
+const DEMO_QUESTIONS = {
+  Mathematics: [
+    { id:1, question:'What is the result of 2 + 3 × 4 using BODMAS?', options:['14','20','24','10'], correct:0, explanation:'BODMAS: Multiplication before Addition. 3 × 4 = 12, then 2 + 12 = 14.' },
+    { id:2, question:'Evaluate: 8 + 4 × 2', options:['24','16','14','12'], correct:1, explanation:'Multiply first: 4 × 2 = 8, then add: 8 + 8 = 16.' },
+    { id:3, question:'Solve: 2x + 6 = 18. What is x?', options:['4','5','6','7'], correct:2, explanation:'2x = 18 − 6 = 12, so x = 6.' },
+    { id:4, question:'What is 15% of 200?', options:['25','30','35','20'], correct:1, explanation:'15% of 200 = 0.15 × 200 = 30.' },
+    { id:5, question:'What is the Pythagorean theorem?', options:['a²+b²=c²','a+b=c','a²−b²=c','2a+b=c²'], correct:0, explanation:'The Pythagorean theorem states a² + b² = c² for right triangles.' },
+  ],
+  Physics: [
+    { id:1, question:'What is the unit of force?', options:['Newton','Joule','Watt','Pascal'], correct:0, explanation:'Force is measured in Newtons (N) in the SI system.' },
+    { id:2, question:'What is the speed of light in a vacuum?', options:['3×10⁸ m/s','3×10⁶ m/s','3×10¹⁰ m/s','1×10⁸ m/s'], correct:0, explanation:'The speed of light is approximately 3×10⁸ m/s.' },
+    { id:3, question:'Which law states F = ma?', options:["Newton's 2nd Law","Newton's 1st Law","Newton's 3rd Law",'Ohm\'s Law'], correct:0, explanation:'F = ma is Newton\'s Second Law of Motion.' },
+    { id:4, question:'What is the SI unit of energy?', options:['Joule','Watt','Newton','Volt'], correct:0, explanation:'Energy is measured in Joules (J).' },
+    { id:5, question:'What type of wave is sound?', options:['Longitudinal','Transverse','Electromagnetic','Surface'], correct:0, explanation:'Sound is a longitudinal (compression) wave.' },
+  ],
+  Chemistry: [
+    { id:1, question:'What is the chemical symbol for Gold?', options:['Au','Go','Gd','Ag'], correct:0, explanation:'Gold\'s symbol Au comes from the Latin "Aurum".' },
+    { id:2, question:'How many elements are in the periodic table?', options:['118','110','108','120'], correct:0, explanation:'The periodic table currently has 118 confirmed elements.' },
+    { id:3, question:'What is the pH of pure water?', options:['7','0','14','5'], correct:0, explanation:'Pure water is neutral with a pH of 7.' },
+    { id:4, question:'What is the chemical formula of water?', options:['H₂O','HO₂','H₂O₂','OH'], correct:0, explanation:'Water is H₂O — two hydrogen atoms and one oxygen atom.' },
+    { id:5, question:'What type of bond involves sharing electrons?', options:['Covalent','Ionic','Metallic','Hydrogen'], correct:0, explanation:'Covalent bonds form when atoms share electron pairs.' },
+  ],
+  Biology: [
+    { id:1, question:'What is the powerhouse of the cell?', options:['Mitochondria','Nucleus','Ribosome','Golgi body'], correct:0, explanation:'Mitochondria produce ATP through cellular respiration.' },
+    { id:2, question:'What is the basic unit of life?', options:['Cell','Atom','Molecule','Tissue'], correct:0, explanation:'The cell is the fundamental structural unit of all living organisms.' },
+    { id:3, question:'Which molecule carries genetic information?', options:['DNA','RNA','Protein','Lipid'], correct:0, explanation:'DNA (deoxyribonucleic acid) stores genetic information.' },
+    { id:4, question:'How many chromosomes do humans have?', options:['46','23','92','48'], correct:0, explanation:'Humans have 46 chromosomes (23 pairs) in each somatic cell.' },
+    { id:5, question:'What process do plants use to make food?', options:['Photosynthesis','Respiration','Digestion','Fermentation'], correct:0, explanation:'Photosynthesis converts light, CO₂, and water into glucose.' },
+  ],
+  English: [
+    { id:1, question:'Which is a correct definition of a noun?', options:['A person, place, or thing','An action word','A describing word','A connecting word'], correct:0, explanation:'Nouns name people, places, things, or ideas.' },
+    { id:2, question:'What is a synonym for "happy"?', options:['Joyful','Sad','Angry','Tired'], correct:0, explanation:'"Joyful" and "happy" share the same meaning — they are synonyms.' },
+    { id:3, question:'Which sentence uses the correct form of "their/there/they\'re"?', options:['"They\'re going to the park"','"Their going to the park"','"There going to the park"','"Theyre going to the park"'], correct:0, explanation:'"They\'re" is the contraction of "they are".' },
+    { id:4, question:'What is the past tense of "run"?', options:['Ran','Runned','Run','Ranned'], correct:0, explanation:'"Run" is an irregular verb; its past tense is "ran".' },
+    { id:5, question:'What figure of speech is "The wind whispered"?', options:['Personification','Simile','Metaphor','Alliteration'], correct:0, explanation:'Giving the wind a human action (whispering) is personification.' },
+  ],
+  General: [
+    { id:1, question:'What is the capital of Pakistan?', options:['Islamabad','Karachi','Lahore','Peshawar'], correct:0, explanation:'Islamabad became Pakistan\'s capital in 1966.' },
+    { id:2, question:'How many continents are there on Earth?', options:['7','6','5','8'], correct:0, explanation:'Earth has 7 continents: Africa, Antarctica, Asia, Australia, Europe, North America, South America.' },
+    { id:3, question:'What is the largest ocean on Earth?', options:['Pacific','Atlantic','Indian','Arctic'], correct:0, explanation:'The Pacific Ocean is the largest, covering about 165 million km².' },
+    { id:4, question:'Who invented the telephone?', options:['Alexander Graham Bell','Thomas Edison','Nikola Tesla','James Watt'], correct:0, explanation:'Alexander Graham Bell is credited with inventing the telephone in 1876.' },
+    { id:5, question:'In what year did Pakistan gain independence?', options:['1947','1948','1945','1950'], correct:0, explanation:'Pakistan gained independence on 14 August 1947.' },
+  ],
+};
+
+function getDemoQuiz(subject, numQ) {
+  const pool = DEMO_QUESTIONS[subject] || DEMO_QUESTIONS.General;
+  return { questions: pool.slice(0, Math.min(numQ, pool.length)) };
+}
+
 export default function QuizPage() {
   const [mode, setMode] = useState('setup'); // setup | quiz | result
   const [imageFile, setImageFile] = useState(null);
@@ -51,6 +101,7 @@ export default function QuizPage() {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
   const handleFile = (file) => {
@@ -120,10 +171,24 @@ Rules:
         setMode('quiz');
         toast.success(`${parsed.questions.length} questions generated!`);
       } else {
-        toast.error('Could not generate quiz. Try a different topic.');
+        // AI unavailable — load demo questions for this subject
+        const demo = getDemoQuiz(subject, numQ);
+        setQuestions(demo.questions);
+        setAnswers({});
+        setSubmitted(false);
+        setScore(0);
+        setMode('quiz');
+        toast.success(`${demo.questions.length} sample questions loaded!`);
       }
     } catch {
-      toast.error('Failed to generate quiz. Check your connection.');
+      // Network error — still load demo questions
+      const demo = getDemoQuiz(subject, numQ);
+      setQuestions(demo.questions);
+      setAnswers({});
+      setSubmitted(false);
+      setScore(0);
+      setMode('quiz');
+      toast.success(`${demo.questions.length} sample questions loaded!`);
     } finally {
       setLoading(false);
     }
@@ -134,18 +199,70 @@ Rules:
     setAnswers(prev => ({ ...prev, [qIdx]: optIdx }));
   };
 
-  const submitQuiz = () => {
+  const submitQuiz = async () => {
     if (Object.keys(answers).length < questions.length) {
       toast.error(`Please answer all ${questions.length} questions first`);
       return;
     }
+
+    setVerifying(true);
+    const token = localStorage.getItem('token');
+
+    // Build list of question + selected answer text pairs
+    const pairs = questions.map((q, i) => ({
+      id: i,
+      question: q.question,
+      options: q.options,
+      selected: q.options[answers[i]] ?? ''
+    }));
+
+    const verifyPrompt = `You are a strict answer checker. For each item below, decide if the selected option is correct.
+Return ONLY a valid JSON array — no markdown, no extra text:
+[{"id":0,"isCorrect":true,"correctAnswer":"exact text of correct option","explanation":"one sentence why"}]
+
+Items:
+${JSON.stringify(pairs)}`;
+
+    try {
+      const res = await axios.post(`${API_URL}/api/tutor/ask`, {
+        question: verifyPrompt,
+        subject,
+        systemPrompt: 'You are an answer verification engine. Respond with ONLY a valid JSON array. No markdown.'
+      }, { headers: { Authorization: `Bearer ${token}` } });
+
+      const text = res.data.answer || '';
+      const match = text.match(/\[[\s\S]*\]/);
+
+      if (match) {
+        const results = JSON.parse(match[0]);
+        let correctCount = 0;
+        const verified = questions.map((q, i) => {
+          const r = results.find(x => x.id === i);
+          const isCorrect = r?.isCorrect ?? (answers[i] === q.correct);
+          if (isCorrect) correctCount++;
+          return {
+            ...q,
+            aiVerified: !!r,
+            aiCorrect: isCorrect,
+            aiCorrectAnswer: r?.correctAnswer ?? q.options[q.correct],
+            explanation: r?.explanation || q.explanation
+          };
+        });
+        setQuestions(verified);
+        setScore(Math.round((correctCount / questions.length) * 100));
+        setSubmitted(true);
+        setMode('result');
+        return;
+      }
+    } catch { /* fall through to index fallback */ }
+
+    // Fallback: index comparison when AI is unavailable
     let correct = 0;
-    questions.forEach((q, i) => {
-      if (answers[i] === q.correct) correct++;
-    });
+    questions.forEach((q, i) => { if (answers[i] === q.correct) correct++; });
     setScore(Math.round((correct / questions.length) * 100));
     setSubmitted(true);
     setMode('result');
+    setVerifying(false);
   };
 
   const resetQuiz = () => {
@@ -154,6 +271,7 @@ Rules:
     setAnswers({});
     setSubmitted(false);
     setScore(0);
+    setVerifying(false);
     setTopic('');
     setImageFile(null);
     setImagePreview('');
@@ -161,7 +279,7 @@ Rules:
 
   // RESULT VIEW
   if (mode === 'result') {
-    const correct = questions.filter((q, i) => answers[i] === q.correct).length;
+    const correct = questions.filter((q, i) => q.aiVerified ? q.aiCorrect : answers[i] === q.correct).length;
     return (
       <div className="min-h-screen bg-ultra-modern">
         <Navbar />
@@ -194,16 +312,22 @@ Rules:
 
               {/* Q&A review */}
               {questions.map((q, i) => {
-                const isCorrect = answers[i] === q.correct;
+                const isCorrect = q.aiVerified ? q.aiCorrect : answers[i] === q.correct;
+                const correctAnswerText = q.aiCorrectAnswer ?? q.options[q.correct];
                 return (
                   <div key={i} className={`bg-white border-2 rounded-2xl p-5 shadow-sm ${isCorrect ? 'border-green-300' : 'border-red-300'}`}>
                     <div className="flex gap-3 mb-4">
                       <span className="text-2xl">{isCorrect ? '✅' : '❌'}</span>
-                      <h3 className="text-lg font-black text-slate-900">Q{i+1}: {q.question}</h3>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-black text-slate-900">Q{i+1}: {q.question}</h3>
+                        {q.aiVerified && (
+                          <span className="text-xs font-bold text-indigo-500 mt-0.5 inline-block">AI-verified</span>
+                        )}
+                      </div>
                     </div>
                     <div className="space-y-2 mb-4">
                       {q.options.map((opt, oi) => {
-                        const isRight = oi === q.correct;
+                        const isRight = opt === correctAnswerText;
                         const isSelected = answers[i] === oi;
                         return (
                           <div key={oi} className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 font-bold text-base ${
@@ -291,10 +415,12 @@ Rules:
               ))}
 
               {/* Submit */}
-              <button onClick={submitQuiz}
-                className="w-full py-5 rounded-2xl font-black text-white text-xl shadow-xl transition-all"
+              <button onClick={submitQuiz} disabled={verifying}
+                className="w-full py-5 rounded-2xl font-black text-white text-xl shadow-xl transition-all disabled:opacity-60"
                 style={{ background: 'linear-gradient(135deg, #059669, #047857)', boxShadow: '0 8px 25px rgba(5,150,105,0.4)' }}>
-                ✅ Submit Quiz ({Object.keys(answers).length}/{questions.length} answered)
+                {verifying
+                  ? '🤖 AI is checking your answers…'
+                  : `✅ Submit Quiz (${Object.keys(answers).length}/${questions.length} answered)`}
               </button>
             </div>
           </main>

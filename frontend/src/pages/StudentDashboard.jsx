@@ -26,7 +26,8 @@ const sidebarLinks = [
   { path: '/student/quiz', label: 'Quizzes', icon: '📊' },
   { path: '/student/psych-test',    label: 'PAT Assessment', icon: '🧬' },
   { path: '/student/gamification', label: 'Achievements',   icon: '🏆' },
-  { path: '/student/videos',       label: 'Videos',          icon: '🎬' },
+  { path: '/student/videos',        label: 'Videos',          icon: '🎬' },
+  { path: '/student/tutorial-lab', label: 'Tutorial Lab',    icon: '🖥️' },
 ];
 
 const features = [
@@ -36,7 +37,8 @@ const features = [
   { title: 'AI Practice',     subtitle: 'Generate exercises instantly',   icon: '🤖', path: '/student/practice',        from: '#10b981', to: '#047857' },
   { title: 'AI Chat',         subtitle: 'Ask any question, get answers',  icon: '💬', path: '/student/chat',            from: '#0ea5e9', to: '#1d4ed8' },
   { title: 'Homework Help',   subtitle: 'Step-by-step AI solutions',      icon: '📝', path: '/student/homework',        from: '#a855f7', to: '#6d28d9' },
-  { title: 'PAT Assessment', subtitle: 'Your psychological learning profile', icon: '🧬', path: '/student/psych-test',      from: '#0891b2', to: '#0e7490' },
+  { title: 'PAT Assessment',  subtitle: 'Your psychological learning profile', icon: '🧬', path: '/student/psych-test',      from: '#0891b2', to: '#0e7490' },
+  { title: 'Tutorial Lab',   subtitle: 'Watch & practice MS Word live',      icon: '🖥️', path: '/student/tutorial-lab',    from: '#16a34a', to: '#15803d' },
 ];
 
 const continueLearning = [

@@ -41,9 +41,16 @@ export default function CourseCatalog() {
       const res = await axios.get(`${API_URL}/api/curriculum/courses`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setCourses(res.data.courses);
-    } catch {
-      toast.error('Failed to load courses');
+      const list = res.data?.courses || res.data || [];
+      setCourses(Array.isArray(list) ? list : []);
+    } catch (err) {
+      const status = err?.response?.status;
+      if (status === 401 || status === 403) {
+        toast.error('Session expired — please log in again');
+      } else {
+        toast.error(`Failed to load courses (${status || 'network error'})`);
+      }
+      setCourses([]);
     } finally {
       setLoading(false);
     }

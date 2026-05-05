@@ -84,14 +84,15 @@ router.post('/ask', authenticateToken, asyncHandler(async (req, res) => {
       : `You are a helpful and friendly tutor. Answer the student's question clearly and thoroughly.`
   };
 
-  const systemPrompt = systemPrompts[detectedSubject] || systemPrompts.general;
+  const systemPrompt = req.body.systemPrompt || systemPrompts[detectedSubject] || systemPrompts.general;
+  const maxTokens = req.body.systemPrompt ? 3000 : 1500;
 
   // Generate response
   const answer = await generateChatCompletion([
     { role: 'system', content: systemPrompt },
     { role: 'user', content: question }
   ], {
-    max_tokens: 1500,
+    max_tokens: maxTokens,
     temperature: 0.7
   });
 

@@ -25,6 +25,7 @@ import MasteryCoach from './pages/MasteryCoach';
 import ToolsHub from './pages/ToolsHub';
 import VideoLibrary from './pages/VideoLibrary';
 import PsychTest from './pages/PsychTest';
+import TutorialLab from './pages/TutorialLab';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, requireRole }) => {
@@ -197,6 +198,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requireRole={['student', 'teacher']}>
             <PsychTest />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/student/tutorial-lab"
+        element={
+          <ProtectedRoute requireRole={['student', 'teacher']}>
+            <TutorialLab />
           </ProtectedRoute>
         }
       />
