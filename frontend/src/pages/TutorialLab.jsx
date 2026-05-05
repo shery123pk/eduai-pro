@@ -226,13 +226,12 @@ function WordEditor() {
   const [fontFam,  setFontFam]    = useState('Arial');
   const [wordCount, setWordCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
-  const selRef = useRef(null);   // saved {from,to} before toolbar steals focus
 
   const editor = useEditor({
     extensions: [
       StarterKit,
       Underline,
-      TextStyleKit,   /* includes TextStyle mark + Color + FontFamily + FontSize */
+      TextStyleKit,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     content: '',
@@ -241,34 +240,16 @@ function WordEditor() {
       setCharCount(text.length);
       setWordCount(text.trim() ? text.trim().split(/\s+/).length : 0);
     },
-    onBlur({ editor }) {
-      /* Preserve selection the moment editor loses focus to a toolbar control */
-      const { from, to } = editor.state.selection;
-      selRef.current = { from, to };
-    },
     editorProps: {
       attributes: { class: 'focus:outline-none', spellcheck: 'true' },
     },
   });
 
-  /* Save selection on mousedown of any control that will steal focus */
-  const saveSel = () => {
-    if (editor) {
-      const { from, to } = editor.state.selection;
-      selRef.current = { from, to };
-    }
-  };
-
-  /* Restore saved selection then run a chain command */
-  const withSel = (chainFn) => {
-    if (!editor) return;
-    const chain = editor.chain().focus();
-    if (selRef.current) chain.setTextSelection(selRef.current);
-    chainFn(chain).run();
-  };
-
-  const applyFont = (f) => { setFontFam(f); withSel(c => c.setFontFamily(f)); };
-  const applySize = (s) => { setFontSize(s); withSel(c => c.setFontSize(s + 'px')); };
+  /* TipTap keeps selection in ProseMirror state even when DOM focus moves to a
+     dropdown — editor.chain().focus() restores DOM focus + selection together.
+     No selRef or withSel needed. */
+  const applyFont = (f) => { setFontFam(f); editor.chain().focus().setFontFamily(f).run(); };
+  const applySize = (s) => { setFontSize(s); editor.chain().focus().setFontSize(s + 'px').run(); };
 
   const downloadDoc = () => {
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
@@ -293,7 +274,8 @@ function WordEditor() {
         {/* Tab bar */}
         <div className="flex px-2 bg-indigo-700">
           {T.map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
+            <button key={tab}
+              onMouseDown={e => { e.preventDefault(); setActiveTab(tab); }}
               className={`px-4 py-1.5 text-xs font-bold transition-colors ${
                 activeTab === tab
                   ? 'bg-white text-indigo-700 rounded-t-lg'
@@ -302,11 +284,11 @@ function WordEditor() {
             </button>
           ))}
           <div className="ml-auto px-3 py-1.5 flex items-center gap-2">
-            <button onClick={downloadDoc}
+            <button onMouseDown={e => { e.preventDefault(); downloadDoc(); }}
               className="px-3 py-1 rounded text-xs font-black text-white bg-green-500 hover:bg-green-600">
               💾 Save .doc
             </button>
-            <button onClick={() => { editor.commands.clearContent(); selRef.current = null; }}
+            <button onMouseDown={e => { e.preventDefault(); editor.chain().focus().clearContent().run(); }}
               className="px-3 py-1 rounded text-xs font-black text-white bg-red-500 hover:bg-red-600">
               🗑 Clear
             </button>
@@ -320,18 +302,14 @@ function WordEditor() {
             <ToolBtn title="Redo" onClick={() => editor.chain().focus().redo().run()}>↪</ToolBtn>
             <SEP />
 
-            {/* Font family — save selection before dropdown opens */}
             <select value={fontFam}
-              onMouseDown={saveSel}
               onChange={e => applyFont(e.target.value)}
               className="text-xs border border-slate-200 rounded px-1 py-0.5 h-7 bg-white text-slate-700 cursor-pointer"
               style={{ maxWidth: 130 }}>
               {FONTS.map(f => <option key={f} value={f}>{f}</option>)}
             </select>
 
-            {/* Font size — save selection before dropdown opens */}
             <select value={fontSize}
-              onMouseDown={saveSel}
               onChange={e => applySize(Number(e.target.value))}
               className="text-xs border border-slate-200 rounded px-1 py-0.5 h-7 w-14 bg-white text-slate-700 cursor-pointer ml-1">
               {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -349,25 +327,19 @@ function WordEditor() {
             <ColorPicker editor={editor} />
             <SEP />
 
-            {/* Headings — explicit set/unset avoids toggleHeading v3 quirks */}
+            {/* Headings */}
             <ToolBtn title="Normal paragraph"
               onClick={() => editor.chain().focus().setParagraph().run()}
               active={editor.isActive('paragraph')} cls="text-xs">Normal</ToolBtn>
             <ToolBtn title="Heading 1"
-              onClick={() => editor.isActive('heading',{level:1})
-                ? editor.chain().focus().setParagraph().run()
-                : editor.chain().focus().setHeading({level:1}).run()}
-              active={editor.isActive('heading',{level:1})} cls="text-xs font-black">H1</ToolBtn>
+              onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+              active={editor.isActive('heading', { level: 1 })} cls="text-xs font-black">H1</ToolBtn>
             <ToolBtn title="Heading 2"
-              onClick={() => editor.isActive('heading',{level:2})
-                ? editor.chain().focus().setParagraph().run()
-                : editor.chain().focus().setHeading({level:2}).run()}
-              active={editor.isActive('heading',{level:2})} cls="text-xs font-black">H2</ToolBtn>
+              onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+              active={editor.isActive('heading', { level: 2 })} cls="text-xs font-black">H2</ToolBtn>
             <ToolBtn title="Heading 3"
-              onClick={() => editor.isActive('heading',{level:3})
-                ? editor.chain().focus().setParagraph().run()
-                : editor.chain().focus().setHeading({level:3}).run()}
-              active={editor.isActive('heading',{level:3})} cls="text-xs font-black">H3</ToolBtn>
+              onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+              active={editor.isActive('heading', { level: 3 })} cls="text-xs font-black">H3</ToolBtn>
           </div>
         )}
 
@@ -712,7 +684,7 @@ export default function TutorialLab() {
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Step-by-Step Lessons</p>
                 {data.lessons.map((l, i) => (
                   <div key={l.id} className="flex items-center gap-1">
-                    <button onClick={() => { setLesson(i); setVideoErr(false); }}
+                    <button onClick={() => setLesson(i)}
                       className={`flex-1 text-left px-3 py-2.5 rounded-xl transition-all flex items-center gap-3 ${
                         i === lessonIdx ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}>
                       <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${
@@ -782,9 +754,15 @@ export default function TutorialLab() {
           font-family: Arial, sans-serif;
           color: #1a1a1a;
         }
-        .tiptap-editor .ProseMirror h1 { font-size: 2em !important; font-weight: 900 !important; margin: 0.6em 0 0.3em; line-height: 1.2; }
-        .tiptap-editor .ProseMirror h2 { font-size: 1.5em !important; font-weight: 800 !important; margin: 0.5em 0 0.3em; line-height: 1.3; }
-        .tiptap-editor .ProseMirror h3 { font-size: 1.2em !important; font-weight: 700 !important; margin: 0.4em 0 0.3em; line-height: 1.4; }
+        .tiptap-editor .ProseMirror ::selection {
+          background: rgba(99, 102, 241, 0.25);
+        }
+        .tiptap-editor .ProseMirror *::selection {
+          background: rgba(99, 102, 241, 0.25);
+        }
+        .tiptap-editor h1, .tiptap-editor .ProseMirror h1, .ProseMirror h1 { font-size: 2em !important; font-weight: 900 !important; margin: 0.6em 0 0.3em; line-height: 1.2; display: block !important; }
+        .tiptap-editor h2, .tiptap-editor .ProseMirror h2, .ProseMirror h2 { font-size: 1.5em !important; font-weight: 800 !important; margin: 0.5em 0 0.3em; line-height: 1.3; display: block !important; }
+        .tiptap-editor h3, .tiptap-editor .ProseMirror h3, .ProseMirror h3 { font-size: 1.2em !important; font-weight: 700 !important; margin: 0.4em 0 0.3em; line-height: 1.4; display: block !important; }
         .tiptap-editor .ProseMirror p  { margin: 0.3em 0; }
         .tiptap-editor .ProseMirror ul { list-style-type: disc;    padding-left: 1.5em; margin: 0.4em 0; }
         .tiptap-editor .ProseMirror ol { list-style-type: decimal; padding-left: 1.5em; margin: 0.4em 0; }
